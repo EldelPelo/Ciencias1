@@ -8,9 +8,10 @@ class Arreglo{
 	//Metodos
 	public:
 		Arreglo(int);
+		void operator = (Arreglo);
 		void cargar();
 		int burbuja();
-		void insercion();
+		int insercion();
 		void shell();
 		void quicksort();
 		void mergesort();
@@ -20,6 +21,12 @@ class Arreglo{
 Arreglo::Arreglo(int tamanio){
 	this->tamanio = tamanio;
 	elementos = new int [tamanio];
+}
+void operator = (Arreglo A){
+	this->tamanio=A.tamanio;
+	for(int k=0;k<tamanio;k++){
+		this->elemento[k]=A.elemento[k];
+	}
 }
 void Arreglo::cargar(){
 	for(int k=0;k<tamanio;k++){
@@ -41,6 +48,19 @@ int Arreglo::burbuja(){
 	}
 	return op;
 }
+int Arreglo::insercion(){
+	int j=1,k,aux;
+	while(j<tamanio){
+		k=j-1;
+		aux = elementos[j];
+		while(k>=0&&elementos[k]>elementos[j]){
+			elementos[j]=elementos[k];
+			k--;
+		}
+		elementos[k+1]=aux;
+		j++;
+	}
+}
 void Arreglo::mostrar(){
 	for(int k=0;k<tamanio;k++){
 		cout<<elementos[k]<<" ";
@@ -50,10 +70,23 @@ int main(){
 	int n;
 	cout<<"Ingresar tamaño del arreglo: ";
 	cin>>n;
-	Arreglo A(n);
+	Arreglo A(n), B(n);
 	cout<<"Digite los elementos del arreglo: ";
 	A.cargar();
+	B=A;
 	cout<<"Burbuja"<<endl;
-	cout<<"Numero de operaciones: "<<A.burbuja()<<endl;
-	A.mostrar();
+	cout<<"Numero de operaciones: "<<B.burbuja()<<endl;
+	B.mostrar();
+	B=A;
+	cout<<"Insercion"<<endl;
+	cout<<"Numero de operaciones: "<<B.insercion()<<endl;
+	B.mostrar();
+	B=A;
+	cout<<"Burbuja"<<endl;
+	cout<<"Numero de operaciones: "<<B.burbuja()<<endl;
+	B.mostrar();
+	B=A;
+	cout<<"Burbuja"<<endl;
+	cout<<"Numero de operaciones: "<<B.burbuja()<<endl;
+	B.mostrar();
 }
