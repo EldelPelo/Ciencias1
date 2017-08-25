@@ -1,0 +1,20 @@
+Menu|
+|-Cargar
+|
+|-Busqueda|
+|         |Secuencial
+|         |Binaria iterativo
+|         |Binaria recursivo
+|         |Regresar
+|
+|-Ordenamiento|
+|             |Burbuja
+|             |Insercion
+|             |Shell
+|             |Quick
+|             |Merge
+|             |Cubetas
+|             |Resumen
+|             |Regresar
+|
+|-Salir
