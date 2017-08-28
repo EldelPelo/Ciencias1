@@ -40,9 +40,9 @@ class Arreglo{
 		int mergesort();
 		int cubetas();
 		void mostrar();
-		int busquedaSecuacial();
-		int busquedadBIterativa();
-		int busquedadBRecursiva();
+		int busquedaSecuencial(int,int&);
+		int busquedaBIterativa(int,int&);
+		int busquedaBRecursiva(int,int,int,int&);
 };
 Arreglo::Arreglo(int tamanio){
 	this->tamanio = tamanio;
@@ -55,9 +55,10 @@ void Arreglo::operator = (Arreglo A){
 	}
 }
 void Arreglo::cargar(){
-    if(tamanio>20){
-        for(int k=0;k<tamanio;k++){
-            elementos[k]=rand()%101;
+	if(tamanio>20){
+        srand(time(NULL));
+		for(int k=0;k<tamanio;k++){
+            elementos[k]=rand()%100 + 1;
         }
     }else{
         for(int k=0;k<tamanio;k++){
@@ -87,6 +88,7 @@ int Arreglo::insercion(){
 		aux = elementos[j];
 		op++;
 		while(k>=0&&elementos[k]>aux){
+			op++;
 			elementos[k+1]=elementos[k];
 			k--;
 		}
@@ -138,6 +140,50 @@ int Arreglo::quicksort(int A[], int izq, int der){
     }
     return op;
 }
+int Arreglo::busquedaSecuencial(int elemento, int &op){
+	int k=0;
+	op=0;
+	while(k<tamanio){
+		op++;
+		if(elementos[k]==elemento){
+			return k;
+		}
+		k++;
+	}
+	return -1;
+}
+int Arreglo::busquedaBIterativa(int elemento, int &op){
+	int ini=0, fin=tamanio-1,mitad;
+	while(ini<=fin){
+		mitad=(ini+fin)/2;
+		op++;
+		if(elementos[mitad]==elemento){
+			return mitad;
+		}
+		if(elementos[mitad]>elemento){
+			fin = mitad -1;
+		}else{
+			ini = mitad+1;
+		}
+	}
+	return -1;
+}
+int Arreglo::busquedaBRecursiva(int elemento, int inicio, int final, int &op){
+	int ini=inicio, fin=final,mitad;
+	mitad=(ini+fin)/2;
+	op++;
+	if(elementos[mitad]==elemento){
+		return mitad;
+	}else if(elementos[mitad]>elemento){
+		fin = mitad -1;
+		busquedaBRecursiva(elemento, ini, fin, op);
+	}else if(elementos[mitad]<elemento){
+		ini = mitad+1;
+		busquedaBRecursiva(elemento, ini, fin, op);
+	}else{
+		return -1;
+	}
+}
 void Arreglo::mostrar(){
 	for(int k=0;k<tamanio;k++){
 		cout<<elementos[k]<<" ";
@@ -179,7 +225,7 @@ char menuOrdenamiento(){
 }
 int main(){
 	char opcion,opcionB,opcionO;
-	int n;
+	int n,elementoB,op=0,posicion;
 	cout<<"Ingresar tamaño del arreglo: ";
     cin>>n;
     Arreglo A(n), B(n);
@@ -200,12 +246,40 @@ int main(){
                 switch(opcionB){
                 case's':
                 case'S':
+					cout<<"Ingrese el elemento a buscar: ";
+					cin>>elementoB;
+					posicion = A.busquedaSecuencial(elementoB,op);
+					if(posicion!=-1){
+						cout<<"\nNumero se encuentra en el arreglo en la posicion: "<<posicion<<".\n";
+					}else{
+						cout<<"\nNumero no se encuentra en el arreglo.\n";
+					}
+					cout<<"Realizo: "<<op<<" operaciones.\n";
                     break;
                 case'i':
                 case'I':
+                	cout<<"Ingrese el elemento a buscar: ";
+					cin>>elementoB;
+					posicion = B.busquedaBIterativa(elementoB,op);
+					if(posicion!=-1){
+						cout<<"\nNumero se encuentra en el arreglo en la posicion: "<<posicion<<".\n";
+					}else{
+						cout<<"\nNumero no se encuentra en el arreglo.\n";
+					}
+					cout<<"Realizo: "<<op<<" operaciones.\n";
                     break;
                 case'b':
                 case'B':
+                	cout<<"Ingrese el elemento a buscar: ";
+					cin>>elementoB;
+					posicion = B.busquedaBRecursiva(elementoB,0,B.tamanio-1,op);
+					if(posicion!=-1){
+						cout<<"\nNumero se encuentra en el arreglo en la posicion: "<<posicion<<".\n";
+					}else{
+						cout<<"\nNumero no se encuentra en el arreglo.\n";
+					}
+					cout<<"Realizo: "<<op<<" operaciones.\n";
+                    break;
                     break;
                 case'r':
                 case'R':
@@ -246,7 +320,7 @@ int main(){
                 case'Q':
                     B=A;
                     cout<<"Quicksort"<<endl;
-                    cout<<"Numero de operaciones: "<<B.shell()<<endl;
+                    //cout<<"Numero de operaciones: "<<B.quicksort()<<endl;
                     B.mostrar();
                     break;
                 case'm':
