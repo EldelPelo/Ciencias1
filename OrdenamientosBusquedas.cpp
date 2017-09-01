@@ -19,17 +19,37 @@
 |
 |-Salir
 */
+#include <vector>
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
 
 using namespace std;
+int hallarMayor(int a[], int tamanio){
+    int mayor = a[0];
+    for(int i=0;i<tamanio;i++){
+        if(mayor<a[i]){
+            mayor = a[i];
+        }
+    }
+    return mayor;
+}
 class Cubeta{
 	int *elementos;
 	public:
+		int tamanio;
+		int mayor=hallarMayor(elementos, tamanio);
+		int potencia = log10(mayor)+1;
 		vector<int> cubetas[10];
+		Cubeta(int);
+		int cubetas();
 };
+Cubeta::Cubeta(int tamanio){
+	this->tamanio = tamanio;
+	elementos = new int[tamanio];
+}
+int Cubeta::cubetas()
 class Arreglo{
 	int *elementos;
 	//Metodos
