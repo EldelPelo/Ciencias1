@@ -22,9 +22,14 @@
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 
 using namespace std;
-
+class Cubeta{
+	int *elementos;
+	public:
+		vector<int> cubetas[10];
+};
 class Arreglo{
 	int *elementos;
 	//Metodos
@@ -36,7 +41,7 @@ class Arreglo{
 		int burbuja();
 		int insercion();
         int shell();
-        int quicksort(int[],int,int);
+        int quicksort(int,int);
 		int mergesort();
 		int cubetas();
 		void mostrar();
@@ -55,10 +60,12 @@ void Arreglo::operator = (Arreglo A){
 	}
 }
 void Arreglo::cargar(){
-	if(tamanio>20){
-        srand(time(NULL));
+	if(tamanio>=30){
+		srand((unsigned)time(0));
+		int numeroAleatorio;
 		for(int k=0;k<tamanio;k++){
-            elementos[k]=rand()%100 + 1;
+            numeroAleatorio = (rand()%(int)pow(tamanio,2))+1;
+			elementos[k]=numeroAleatorio;
         }
     }else{
         for(int k=0;k<tamanio;k++){
@@ -113,30 +120,30 @@ int Arreglo::shell(){
     }
     return op;
 }
-int Arreglo::quicksort(int A[], int izq, int der){
-    int auxiliar, mitad, i, j,op=0;
-    mitad =A[(izq+der)/2];
+int Arreglo::quicksort(int izq, int der){
+    int auxiliar, mitad, i=izq, j=der,op=0;
+    mitad =elementos[(izq+der)/2];
     do{
-        while((A[i]<mitad) && (j<=der)){
+        while((elementos[i]<mitad) && (j<=der)){
             i++;
         }
-        while((mitad<A[j]) && (j>izq)){
+        while((mitad<elementos[j]) && (j>izq)){
             j--;
         }
         op++;
         if(i<=j){
-            auxiliar = A[i];
-            A[i] = A[j];
-            A[j] = auxiliar;
+            auxiliar = elementos[i];
+            elementos[i] = elementos[j];
+            elementos[j] = auxiliar;
             i++;
             j--;
         }
     }while(i<=j);
     if(izq<j){
-        quicksort(A,izq,j);
+        quicksort(izq,j);
     }
     if(i<=der){
-        quicksort(A,i,der);
+        quicksort(i,der);
     }
     return op;
 }
@@ -196,6 +203,7 @@ char menuPrincipal(){
 	cout<<"(C)argar\n";
 	cout<<"(B)usqueda\n";
 	cout<<"(O)rdenamiento\n";
+	cout<<"(M)ostrar\n";
     cout<<"(S)alir\n";
 	cin>>opcion;
     return opcion;
@@ -234,7 +242,7 @@ int main(){
         switch(opcion){
         case'c':
         case'C':
-            if(A.tamanio>20){
+            if(A.tamanio>=30){
                 cout<<"El arreglo se cargara solo con numeros aleatorios\n";
             }
             A.cargar();
@@ -242,12 +250,12 @@ int main(){
         case'b':
         case'B':
             do{
+            	cout<<"Ingrese el elemento a buscar: ";
+				cin>>elementoB;
                 opcionB=menuBusqueda();
                 switch(opcionB){
                 case's':
                 case'S':
-					cout<<"Ingrese el elemento a buscar: ";
-					cin>>elementoB;
 					posicion = A.busquedaSecuencial(elementoB,op);
 					if(posicion!=-1){
 						cout<<"\nNumero se encuentra en el arreglo en la posicion: "<<posicion<<".\n";
@@ -258,8 +266,6 @@ int main(){
                     break;
                 case'i':
                 case'I':
-                	cout<<"Ingrese el elemento a buscar: ";
-					cin>>elementoB;
 					posicion = B.busquedaBIterativa(elementoB,op);
 					if(posicion!=-1){
 						cout<<"\nNumero se encuentra en el arreglo en la posicion: "<<posicion<<".\n";
@@ -270,8 +276,6 @@ int main(){
                     break;
                 case'b':
                 case'B':
-                	cout<<"Ingrese el elemento a buscar: ";
-					cin>>elementoB;
 					posicion = B.busquedaBRecursiva(elementoB,0,B.tamanio-1,op);
 					if(posicion!=-1){
 						cout<<"\nNumero se encuentra en el arreglo en la posicion: "<<posicion<<".\n";
@@ -320,7 +324,7 @@ int main(){
                 case'Q':
                     B=A;
                     cout<<"Quicksort"<<endl;
-                    //cout<<"Numero de operaciones: "<<B.quicksort()<<endl;
+                    cout<<"Numero de operaciones: "<<B.quicksort(0,B.tamanio)<<endl;
                     B.mostrar();
                     break;
                 case'm':
@@ -337,7 +341,11 @@ int main(){
                     cout<<"Numero de operaciones: "<<B.shell()<<endl;
                     B.mostrar();
                     break;
-                case'r':
+                case't':
+                case'T':
+                	
+                    break;
+				case'r':
                 case'R':
                     break;
                 default:
@@ -346,7 +354,11 @@ int main(){
                 }
             }while(opcionO!='R'&&opcionO!='r');
             break;
-        case's':
+        case'm':
+        case'M':
+        	A.mostrar();
+            break;
+		case's':
         case'S':
             break;
         default:
