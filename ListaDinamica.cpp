@@ -7,13 +7,14 @@ struct Nodo{
 	Nodo *sig;
 };
 class ListaDinamica{
-	Nodo *cab;
+	 protected: Nodo *cab;
 	//Metodos
 	public:
 		ListaDinamica();
 		void agregar(int);
 		void mostrar();
 		void ordenar();
+		bool vacia();
 };
 ListaDinamica::ListaDinamica(){
 	cab=NULL;
@@ -48,6 +49,44 @@ void ListaDinamica::ordenar(){
 		p=(*p).sig;
 	}
 }
+bool ListaDinamica::vacia(){
+	if(cab==NULL){
+		return false;
+	}
+	return true;
+}
+class Cola: public ListaDinamica{
+	private Nodo *fin;
+	public:
+		Cola();
+		void agregar(int);
+		int eliminar();
+}
+Cola::Cola(){
+	cab=fin=NULL;
+}
+void Cola::agregar(int dato){
+	Nodo *p = new Nodo;
+	p->dato=dato;
+	p->sig=NULL;
+	if(!cab){
+		cab=p;
+	}else{
+		fin->sig = p;
+	}
+	fin=p;
+}
+int Cola::eliminar(){
+	int dato = cab->dato;
+	Nodo *p = cab;
+	cab = cab->sig;
+	delete p;
+	return dato;
+}
+class Pila: public ListaDinamica{
+	public:
+		int eliminar();	
+};
 char menu();
 int main(){
 	ListaDinamica lista;
