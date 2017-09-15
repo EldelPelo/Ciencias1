@@ -34,7 +34,7 @@ void ListaDinamica::mostrar(){
 }
 void ListaDinamica::ordenar(){
 	Nodo *p=cab;
-	Nodo *q=(*cab).sig;
+	Nodo *q=cab->sig;
 	Nodo *temp;
 	while((*p).sig!=NULL){
 		while((*q).sig!=NULL){
@@ -56,12 +56,13 @@ bool ListaDinamica::vacia(){
 	return true;
 }
 class Cola: public ListaDinamica{
-	private Nodo *fin;
+	private:
+		Nodo *fin;
 	public:
 		Cola();
 		void agregar(int);
 		int eliminar();
-}
+};
 Cola::Cola(){
 	cab=fin=NULL;
 }
