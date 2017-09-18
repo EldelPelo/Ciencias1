@@ -44,19 +44,20 @@ void ListaDoble::eliminar(int dato){
 				cab=p->sig;
 				delete p;
 			}else if(!p->sig){
-				ant = p->ant;
+				fin=p->ant;
+				fin->sig=NULL;
 				delete p;
 			}else{
 				a=p->ant;
-				s=s->sig;
+				s=p->sig;
 				a->sig=s;
 				s->ant=a;
 				delete p;
-			}	
+			}
 		}else{
 			p=p->sig;
 		}
-	}	
+	}
 }
 void ListaDoble::mostrar(){
 	Nodo *p=cab;
@@ -74,14 +75,14 @@ Nodo *ListaDoble::buscar(int dato){
 			p=p->sig;
 		}
 	}
-	return p;	
+	return p;
 }
 bool ListaDoble::vacia(){
 	if(cab==NULL){
 		return false;
 	}
-	return true;	
+	return true;
 }
 int main(){
-	
+
 }
