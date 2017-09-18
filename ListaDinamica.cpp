@@ -34,19 +34,20 @@ void ListaDinamica::mostrar(){
 }
 void ListaDinamica::ordenar(){
 	Nodo *p=cab;
-	Nodo *q=cab->sig;
-	Nodo *temp;
-	while((*p).sig!=NULL){
-		while((*q).sig!=NULL){
-			if((*p).dato>(*q).dato){
-				temp = q;
-				p = q;
-				q = temp;
+	Nodo *q=p->sig;
+	int temp;
+	while(p->sig){
+		while(q){
+			if(p->dato>q->dato){
+				temp = q->dato;
+				q->dato = p->dato;
+				p->dato = temp;
 				cout<<"O ";
 			}
-			q=(*q).sig;
+			q=q->sig;
 		}
-		p=(*p).sig;
+		p=p->sig;
+        q=p->sig;
 	}
 }
 bool ListaDinamica::vacia(){
@@ -86,8 +87,18 @@ int Cola::eliminar(){
 }
 class Pila: public ListaDinamica{
 	public:
-		int eliminar();	
+		int eliminar();
 };
+int Pila::eliminar(){
+    Nodo *p=cab;
+    int dato;
+    while(p->sig){
+        p=p->sig;
+    }
+    dato=p->dato;
+    delete p;
+    return dato;
+}
 char menu();
 int main(){
 	ListaDinamica lista;
