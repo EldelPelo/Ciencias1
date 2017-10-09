@@ -1,6 +1,8 @@
 #include <iostream>
 #include <time.h>
 #include <stdlib.h>
+#include <queue>
+#include <math.h>
 
 using namespace std;
 
@@ -20,8 +22,8 @@ class ArbolBinario{
 		void mostrarPreorden(Nodo *);
 		void mostrarPosorden(Nodo *);
 		void mostrarInorden(Nodo *);
-		void mostrarNiveles();
-		int profundidad();
+		void mostrarNiveles(Nodo *);
+		int profundidad(Nodo *);
 		Nodo *buscar(Nodo *, int);
 		Nodo *getRaiz();
 		void setRaiz(Nodo *);
@@ -75,15 +77,53 @@ void ArbolBinario::mostrarPosorden(Nodo *raiz){
 Nodo *ArbolBinario::buscar(Nodo *raiz, int elemento){
 	if(raiz->dato==elemento){
 		return raiz;
-	}else{
-		if(raiz->izq){
-			buscar(raiz->izq,elemento);
-		}
-		else{
-			buscar(raiz->der,elemento);
-		}
-	}
-} 
+	}else if(raiz->izq){
+        return buscar(raiz->izq,elemento);
+    }else if(raiz->der){
+        return buscar(raiz->der,elemento);
+    }else{
+        return NULL;
+    }
+}
+void agregarHijos(queue<Nodo *> &cola, Nodo *raiz){
+    if(raiz->izq){
+        cola.push(raiz->izq);
+    }
+    if(raiz->der){
+        cola.push(raiz->der);
+    }
+}
+void ArbolBinario::mostrarNiveles(Nodo *raiz){
+    Nodo *p = raiz;
+    Nodo *elementoCola;
+    int numeroNodos;
+    queue<Nodo*> niveles;
+    niveles.push(raiz);
+    while(!niveles.empty()){
+        numeroNodos = niveles.size();
+        while(numeroNodos > 0){
+            elementoCola = niveles.front();
+            agregarHijos(niveles, elementoCola);
+            cout<<elementoCola->dato<<" ";
+            niveles.pop();
+            numeroNodos--;
+        }
+        cout<<"\n";
+    }
+}
+int ArbolBinario::profundidad(Nodo *raiz){
+    if(!raiz){
+        return 0;
+    }else{
+        int proIzq = profundidad(raiz->izq);
+        int proDer = profundidad(raiz->der);
+        if(proIzq> proDer){
+            return(proIzq+1);
+        }else{
+            return(proDer+1);
+        }
+    }
+}
 char menu();
 int main(){
 	srand(time(NULL));
@@ -108,19 +148,34 @@ int main(){
 				cout<<"Preorden\n";
 				raiz = arbol.getRaiz();
 				arbol.mostrarPreorden(raiz);
+                cout<<"\n";
 				break;
 			case'o':
 			case'O':
 				cout<<"Posorden\n";
 				raiz = arbol.getRaiz();
 				arbol.mostrarPosorden(raiz);
+				cout<<"\n";
 				break;
 			case'i':
 			case'I':
 				cout<<"Inorden\n";
 				raiz = arbol.getRaiz();
 				arbol.mostrarInorden(raiz);
+				cout<<"\n";
 				break;
+            case'N':
+            case'n':
+                cout<<"Niveles\n";
+                raiz = arbol.getRaiz();
+                arbol.mostrarNiveles(raiz);
+                break;
+            case'f':
+            case'F':
+                cout<<"Profundidad\n";
+                raiz = arbol.getRaiz();
+                cout<<"P: "<<arbol.profundidad(raiz)<<endl;
+                break;
 			case'b':
 			case'B':
 				cout<<"\nIngrese dato a buscar: ";
@@ -132,18 +187,19 @@ int main(){
 				}else{
 					cout<<"No encontrado.\n";
 				}
-				break;	
+				break;
 		}
 	}while(opcion!='s'&&opcion!='S');
 	return 0;
 }
 char menu(){
 	char opcion;
+	cout<<"MENU ARBOLES";
 	cout<<"(A)gregar\n";
-	cout<<"(E)liminar)\n";
-	cout<<"(P)reorden)\n";
+	cout<<"(E)liminar\n";
+	cout<<"(P)reorden\n";
 	cout<<"P(o)srden\n";
-	cout<<"(I)norden)\n";
+	cout<<"(I)norden\n";
 	cout<<"(N)iveles\n";
 	cout<<"Pro(f)undidad\n";
 	cout<<"(B)uscar\n";
