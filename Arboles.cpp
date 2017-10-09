@@ -27,6 +27,8 @@ class ArbolBinario{
 		Nodo *buscar(Nodo *, int);
 		Nodo *getRaiz();
 		void setRaiz(Nodo *);
+		int contarHojas();
+		int contarNodos();
 };
 ArbolBinario::ArbolBinario(){
 	raiz = NULL;
@@ -53,6 +55,13 @@ Nodo * ArbolBinario::agregar(Nodo *raiz, int dato){
 	}
 	return raiz;
 }
+int ArbolBinario::eliminar(){
+	Nodo *padre, *hijo;
+	
+	if(raiz){
+		
+	}
+}
 void ArbolBinario::mostrarPreorden(Nodo *raiz){
 	if(raiz){
 		cout<<raiz->dato<<" ";
@@ -77,12 +86,13 @@ void ArbolBinario::mostrarPosorden(Nodo *raiz){
 Nodo *ArbolBinario::buscar(Nodo *raiz, int elemento){
 	if(raiz->dato==elemento){
 		return raiz;
-	}else if(raiz->izq){
-        return buscar(raiz->izq,elemento);
-    }else if(raiz->der){
-        return buscar(raiz->der,elemento);
-    }else{
-        return NULL;
+	}else{ 
+		if(raiz->izq){
+			return buscar(raiz->izq,elemento);
+    	}
+		if(raiz->der){
+        	return buscar(raiz->der,elemento);
+		}
     }
 }
 void agregarHijos(queue<Nodo *> &cola, Nodo *raiz){
@@ -124,6 +134,17 @@ int ArbolBinario::profundidad(Nodo *raiz){
         }
     }
 }
+/*int ArbolBinario::contarHojas(){
+	if(raiz->dato==elemento){
+		return raiz;
+	}else if(raiz->izq){
+        return buscar(raiz->izq,elemento);
+    }else if(raiz->der){
+        return buscar(raiz->der,elemento);
+    }else{
+        return NULL;
+    }
+}*/
 char menu();
 int main(){
 	srand(time(NULL));
@@ -188,6 +209,10 @@ int main(){
 					cout<<"No encontrado.\n";
 				}
 				break;
+			case'c':
+			case'C':
+				//cout<<"Numero de hojas: "<< arbol.contarHojas()<<endl;
+				break;
 		}
 	}while(opcion!='s'&&opcion!='S');
 	return 0;
@@ -203,6 +228,7 @@ char menu(){
 	cout<<"(N)iveles\n";
 	cout<<"Pro(f)undidad\n";
 	cout<<"(B)uscar\n";
+	cout<<"(C)ontar hojas\n";
 	cout<<"Ingrese opcion: ";
 	cin>>opcion;
 	return opcion;
