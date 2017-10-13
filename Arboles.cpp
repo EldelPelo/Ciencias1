@@ -13,7 +13,8 @@ struct Nodo{
 };
 
 class ArbolBinario{
-	Nodo *raiz;
+	protected:
+		Nodo *raiz;
 	//Metodos
 	public:
 		ArbolBinario();
@@ -69,7 +70,7 @@ void ArbolBinario::mostrarPreorden(Nodo *raiz){
 		mostrarPreorden(raiz->der);
 	}
 }
-void ArbolBinario::mostrarInorden(Nodo *raiz){
+void ArbolBinario::mostrarInorden(){
 	if(raiz){
 		mostrarPreorden(raiz->izq);
 		cout<<raiz->dato<<" ";
@@ -145,6 +146,57 @@ int ArbolBinario::profundidad(Nodo *raiz){
         return NULL;
     }
 }*/
+class ArbolBinOrd:public ArbolBinario{
+	public:
+		ArbolBinOrd();
+		Nodo *agregar(Nodo *, int);
+		Nodo *buscar(Nodo *, int);
+		Nodo *buscarRe(int);
+};
+
+ArbolBinOrd::ArbolBinOrd(){
+	raiz = NULL;
+}
+Nodo *ArbolBinOrd::agregar(Nodo *raiz , int dato){
+	if(raiz){
+		if(raiz->dato>dato){
+			raiz->izq=agregar(raiz->izq, dato);
+		}else if(raiz->dato<dato){
+			raiz->der=agregar(raiz->der, dato);
+		}
+	}else{
+		raiz = new Nodo;
+		raiz->dato=dato;
+		raiz->izq=NULL;
+		raiz->der=NULL;
+	}
+	return raiz;
+}
+Nodo *ArbolBinOrd::buscar(Nodo *raiz,int dato){
+	if(raiz){
+		if(raiz->dato==dato){
+			return raiz;
+		}else if(raiz->dato>dato){
+				return buscar(raiz->izq,dato);
+	    }else if(raiz->der){
+	        return buscar(raiz->der,dato);
+		}
+	}
+	return raiz;
+}
+Nodo *ArbolBinOrd::buscarRe(int dato){
+	Nodo *p=raiz;
+	while(p){
+		if(p->dato==dato){
+			return p;
+		}if(p->dato>dato){
+			p=p->izq;
+	    }else{
+	        p=p->der;
+		}
+	}
+	return p;
+}
 char menu();
 int main(){
 	srand(time(NULL));
@@ -152,7 +204,8 @@ int main(){
 	char opcion;
 	Nodo *raiz;
 	Nodo *encontrado;
-	ArbolBinario arbol;
+	//ArbolBinario arbol;
+	ArbolBinOrd arbol;
 	raiz = arbol.getRaiz();
 	do{
 		opcion=menu();
